@@ -441,10 +441,7 @@
               <dt>Built with</dt><dd>Roblox Studio, Luau</dd>
             </dl>
           </div>
-          <div class="cover video" data-yt="h5QNi9tTVTc">
-            <img src="https://i.ytimg.com/vi/h5QNi9tTVTc/hqdefault.jpg" alt="" loading="lazy">
-            <button type="button" aria-label="Play video: AI Fighter"><span class="playbadge"><svg width="18" height="18"><use href="#i-play"/></svg></span></button>
-          </div>
+          <div class="cover video" id="special-video"></div>
         </article>
       </div>
     </section>
@@ -558,16 +555,15 @@ const SYSTEMS = [
 /* ======================= fim da área de edição ======================= */
 
 const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+/* Vídeo do YouTube tocando sozinho, sem som e em loop */
+const yt = (id, title) => `<iframe src="https://www.youtube-nocookie.com/embed/${esc(id)}?autoplay=1&mute=1&loop=1&playlist=${esc(id)}&controls=0&rel=0&playsinline=1&modestbranding=1" title="${esc(title)}" allow="autoplay; encrypted-media; picture-in-picture" loading="lazy" allowfullscreen></iframe>`;
 const initials = n => n.split(/\s+/).filter(w => /^[A-Za-z]/.test(w)).slice(0, 2).map(w => w[0]).join("").toUpperCase() || "?";
 
 /* Jogos */
 document.getElementById("games-list").innerHTML = GAMES.map(g => `
   <article class="game${g.featured ? " featured" : ""}">
     ${g.youtube
-      ? `<div class="cover video" data-yt="${esc(g.youtube)}">
-           <img src="https://i.ytimg.com/vi/${esc(g.youtube)}/hqdefault.jpg" alt="" loading="lazy">
-           <button type="button" aria-label="Play video: ${esc(g.name)}"><span class="playbadge"><svg width="18" height="18"><use href="#i-play"/></svg></span></button>
-         </div>`
+      ? `<div class="cover video">${yt(g.youtube, g.name)}</div>`
       : g.image
       ? `<div class="cover"><img src="${esc(g.image)}" alt="${esc(g.name)} thumbnail" loading="lazy"></div>`
       : `<div class="cover empty"><span>${esc(initials(g.name))}</span></div>`}
@@ -581,14 +577,11 @@ document.getElementById("games-list").innerHTML = GAMES.map(g => `
     </div>
   </article>`).join("");
 
-/* Sistemas: o vídeo só carrega quando a pessoa clica (página mais leve) */
+/* Sistemas */
 document.getElementById("systems-list").innerHTML = SYSTEMS.map(s => `
   <article class="system">
     ${s.youtube
-      ? `<div class="video" data-yt="${esc(s.youtube)}">
-           <img src="https://i.ytimg.com/vi/${esc(s.youtube)}/hqdefault.jpg" alt="" loading="lazy">
-           <button type="button" aria-label="Play video: ${esc(s.name)}"><span class="playbadge"><svg width="18" height="18"><use href="#i-play"/></svg></span></button>
-         </div>`
+      ? `<div class="video">${yt(s.youtube, s.name)}</div>`
       : `<div class="video empty">Video coming soon</div>`}
     <div class="system-body">
       <h3>${esc(s.name)}</h3>
@@ -600,12 +593,8 @@ document.getElementById("systems-list").innerHTML = SYSTEMS.map(s => `
     </div>
   </article>`).join("");
 
-document.querySelectorAll(".video[data-yt] button").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const box = btn.parentElement, id = box.dataset.yt;
-    box.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" title="Video" allow="autoplay; encrypted-media; fullscreen" allowfullscreen></iframe>`;
-  });
-});
+/* Vídeo do projeto especial (AI Fighter) */
+document.getElementById("special-video").innerHTML = yt("h5QNi9tTVTc", "AI Fighter");
 
 /* Copiar Discord */
 const DISCORD = "alguemlegal123";
