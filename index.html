@@ -225,8 +225,9 @@
   /* ---- Sistemas à venda ---- */
   .systems { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
   .system { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; }
-  .video { position: relative; aspect-ratio: 16/9; background: #151822; }
-  .video img { width: 100%; height: 100%; object-fit: cover; }
+  .video { position: relative; aspect-ratio: 16/9; background: #151822; overflow: hidden; }
+  /* a thumbnail do YouTube é 4:3 com faixas pretas; centraliza e corta as faixas */
+  .video img, .cover.video img { position: absolute; top: 50%; left: 0; width: 100%; height: auto; transform: translateY(-50%); object-fit: initial; }
   .video iframe { width: 100%; height: 100%; border: 0; display: block; }
   .video button {
     position: absolute; inset: 0; width: 100%; border: 0; background: transparent; cursor: pointer;
